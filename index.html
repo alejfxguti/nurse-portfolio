@@ -62,8 +62,8 @@
             text-decoration: none;
             letter-spacing: 0.01em;
         }
-        .nav-links { display: flex; gap: 2px; align-items: center; }
-        .nav-links a {
+        .nav-ls { display: flex; gap: 2px; align-items: center; }
+        .nav-ls a {
             color: rgba(255,255,255,0.65);
             text-decoration: none;
             font-weight: 400;
@@ -72,7 +72,7 @@
             padding: 7px 13px;
             border-radius: 6px;
         }
-        .nav-links a:hover { color: white; background: rgba(255,255,255,0.09); }
+        .nav-ls a:hover { color: white; background: rgba(255,255,255,0.09); }
         .nav-toggle {
             display: none;
             background: none;
@@ -85,7 +85,7 @@
 
         @media (max-width: 768px) {
             .floating-nav { padding: 14px 20px; }
-            .nav-links {
+            .nav-ls {
                 position: fixed;
                 top: 53px; left: 0; right: 0;
                 background: rgba(14,22,33,0.99);
@@ -95,8 +95,8 @@
                 transform: translateX(-100%);
                 transition: transform 0.3s ease;
             }
-            .nav-links.active { transform: translateX(0); }
-            .nav-links a { width: 100%; text-align: center; padding: 13px; border-radius: 6px; margin-bottom: 2px; }
+            .nav-ls.active { transform: translateX(0); }
+            .nav-ls a { width: 100%; text-align: center; padding: 13px; border-radius: 6px; margin-bottom: 2px; }
             .nav-toggle { display: block; }
         }
 
@@ -391,6 +391,7 @@
 
         /* ── CLINICAL ── */
         .clinical { background: var(--ink); padding: 88px 24px; }
+        .clinical .clinical-inner { max-width: 1100px; margin: 0 auto; }
         .clinical .section-title { color: white; }
         .clinical .section-subtitle { color: rgba(255,255,255,0.55); }
         .clinical-card { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.09); border-left-color: var(--blue); }
@@ -715,49 +716,50 @@
 
     <!-- Clinical Experience -->
     <section class="clinical" id="clinical">
-        <h2 class="section-title">Trained Among the Best</h2>
-        <p class="section-subtitle">Barnes-Jewish Hospital holds top-20 U.S. News rankings in 14 of 16 specialties. St. Louis Children's is nationally ranked in 10 pediatric specialties. 600 hours across both systems — 204 of them on the same floor, with the same team.</p>
-
-        <div class="clinical-highlights">
-            <div class="clinical-card">
-                <h4>🚨 Pediatric Emergency</h4>
-                <div class="hours">96 hours · St. Louis Children's Hospital (Magnet)</div>
-                <p>Sickle cell crises, severe asthma, burns, behavioral health emergencies, and trauma. One of the country's busiest pediatric EDs, where every shift required calm hands and a faster mind.</p>
-            </div>
-            <div class="clinical-card">
-                <h4>🏥 Adult Med-Surg Preceptorship</h4>
-                <div class="hours">96 hours · Barnes-Jewish Hospital (Magnet)</div>
-                <p>Four to six complex patients per shift. Telemetry, post-op recovery, chronic disease, and end-of-life care. The floor that teaches you what you're made of.</p>
-            </div>
-            <div class="clinical-card">
-                <h4>🏥 Adult Med-Surg Rotation</h4>
-                <div class="hours">216 hours · Barnes-Jewish Hospital (Magnet)</div>
-                <p>Across two units, managing patients whose conditions rarely came one at a time. Advanced wound care, medication management across all routes, and discharge planning that started at admission.</p>
-            </div>
-            <div class="clinical-card">
-                <h4>🧠 Psychiatric Nursing</h4>
-                <div class="hours">48 hours · Barnes-Jewish Hospital (Magnet)</div>
-                <p>Patients navigating crisis, stigma, and systems that often failed them before they arrived. Therapeutic communication, de-escalation, and trauma-informed care in an inpatient setting.</p>
-            </div>
-            <div class="clinical-card">
-                <h4>👶 Obstetrics</h4>
-                <div class="hours">48 hours · Barnes-Jewish Hospital (Magnet)</div>
-                <p>Postpartum care, newborn assessment, and family-centered education during some of the most emotionally loaded hours families will ever experience.</p>
-            </div>
-            <div class="clinical-card">
-                <h4>🩺 Pediatric Endocrinology</h4>
-                <div class="hours">48 hours · Barnes-Jewish Hospital (Magnet)</div>
-                <p>Pediatric and adolescent patients managing endocrine conditions, chronic disease, and acute illness that hadn't yet found a name.</p>
-            </div>
-            <div class="clinical-card">
-                <h4>🏠 Public / Community Health</h4>
-                <div class="hours">48 hours · Gateway 180 Emergency Shelter</div>
-                <p>SDOH-focused care for families experiencing homelessness. Developed an evidence-based wellness screening tool adopted by shelter leadership to improve health outcomes and resource allocation.</p>
-            </div>
-            <div class="clinical-card">
-                <h4>👁️ Clinical Shadowing</h4>
-                <div class="hours">Non-curricular · 2025 & 2011–2015</div>
-                <p>Adult ICU, Neuro ICU, PCU, NICU, PICU, and PACU at Barnes-Jewish and St. Louis Children's (2025). Emergency Department and Pediatric Neurology ICU at MetroWest Medical Center and Boston Children's Hospital (2011–2015). The beginning of a question that took fifteen years to answer.</p>
+        <div class="clinical-inner">
+            <h2 class="section-title">Trained Among the Best</h2>
+            <p class="section-subtitle">...</p>
+            <div class="clinical-highlights">
+                <div class="clinical-card">
+                    <h4>🚨 Pediatric Emergency</h4>
+                    <div class="hours">96 hours · St. Louis Children's Hospital (Magnet)</div>
+                    <p>Sickle cell crises, severe asthma, burns, behavioral health emergencies, and trauma. One of the country's busiest pediatric EDs, where every shift required calm hands and a faster mind.</p>
+                </div>
+                <div class="clinical-card">
+                    <h4>🏥 Adult Med-Surg Preceptorship</h4>
+                    <div class="hours">96 hours · Barnes-Jewish Hospital (Magnet)</div>
+                    <p>Four to six complex patients per shift. Telemetry, post-op recovery, chronic disease, and end-of-life care. The floor that teaches you what you're made of.</p>
+                </div>
+                <div class="clinical-card">
+                    <h4>🏥 Adult Med-Surg Rotation</h4>
+                    <div class="hours">216 hours · Barnes-Jewish Hospital (Magnet)</div>
+                    <p>Across two units, managing patients whose conditions rarely came one at a time. Advanced wound care, medication management across all routes, and discharge planning that started at admission.</p>
+                </div>
+                <div class="clinical-card">
+                    <h4>🧠 Psychiatric Nursing</h4>
+                    <div class="hours">48 hours · Barnes-Jewish Hospital (Magnet)</div>
+                    <p>Patients navigating crisis, stigma, and systems that often failed them before they arrived. Therapeutic communication, de-escalation, and trauma-informed care in an inpatient setting.</p>
+                </div>
+                <div class="clinical-card">
+                    <h4>👶 Obstetrics</h4>
+                    <div class="hours">48 hours · Barnes-Jewish Hospital (Magnet)</div>
+                    <p>Postpartum care, newborn assessment, and family-centered education during some of the most emotionally loaded hours families will ever experience.</p>
+                </div>
+                <div class="clinical-card">
+                    <h4>🩺 Pediatric Endocrinology</h4>
+                    <div class="hours">48 hours · Barnes-Jewish Hospital (Magnet)</div>
+                    <p>Pediatric and adolescent patients managing endocrine conditions, chronic disease, and acute illness that hadn't yet found a name.</p>
+                </div>
+                <div class="clinical-card">
+                    <h4>🏠 Public / Community Health</h4>
+                    <div class="hours">48 hours · Gateway 180 Emergency Shelter</div>
+                    <p>SDOH-focused care for families experiencing homelessness. Developed an evidence-based wellness screening tool adopted by shelter leadership to improve health outcomes and resource allocation.</p>
+                </div>
+                <div class="clinical-card">
+                    <h4>👁️ Clinical Shadowing</h4>
+                    <div class="hours">Non-curricular · 2025 & 2011–2015</div>
+                    <p>Adult ICU, Neuro ICU, PCU, NICU, PICU, and PACU at Barnes-Jewish and St. Louis Children's (2025). Emergency Department and Pediatric Neurology ICU at MetroWest Medical Center and Boston Children's Hospital (2011–2015). The beginning of a question that took fifteen years to answer.</p>
+                </div>
             </div>
         </div>
     </section>
