@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alejandro Gutierrez, MPH, BSN, RN | New Graduate Nurse</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Figtree:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink:    #0E1621;
+            --blue:   #1460A6;
+            --amber:  #C06830;
+            --text:   #1C202A;
+            --muted:  #5F6878;
+            --subtle: #8E97A4;
+            --surface:#F4F5F7;
+            --border: #DFE2E8;
+            --white:  #FFFFFF;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Figtree', -apple-system, sans-serif;
+            font-size: 16px;
+            line-height: 1.7;
+            color: var(--text);
+            background: var(--white);
+            overflow-x: hidden;
+        }
+
+        /* ── NAV ── */
+        .floating-nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            padding: 16px 32px;
+            z-index: 1000;
+            transform: translateY(-100%);
+            transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s;
+            border-bottom: 1px solid transparent;
+            background: transparent;
+        }
+        .floating-nav.visible {
+            transform: translateY(0);
+            background: rgba(14, 22, 33, 0.97);
+            backdrop-filter: blur(12px);
+            border-bottom-color: rgba(255,255,255,0.07);
+        }
+        .nav-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-brand {
+            color: white;
+            font-weight: 500;
+            font-size: 0.92rem;
+            text-decoration: none;
+            letter-spacing: 0.01em;
+        }
+        .nav-links { display: flex; gap: 2px; align-items: center; }
+        .nav-links a {
+            color: rgba(255,255,255,0.65);
+            text-decoration: none;
+            font-weight: 400;
+            font-size: 0.88rem;
+            transition: color 0.2s, background 0.2s;
+            padding: 7px 13px;
+            border-radius: 6px;
+        }
+        .nav-links a:hover { color: white; background: rgba(255,255,255,0.09); }
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.4rem;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        @media (max-width: 768px) {
+            .floating-nav { padding: 14px 20px; }
+            .nav-links {
+                position: fixed;
+                top: 53px; left: 0; right: 0;
+                background: rgba(14,22,33,0.99);
+                flex-direction: column;
+                gap: 0;
+                padding: 16px;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            .nav-links.active { transform: translateX(0); }
+            .nav-links a { width: 100%; text-align: center; padding: 13px; border-radius: 6px; margin-bottom: 2px; }
+            .nav-toggle { display: block; }
+        }
+
+        /* ── HERO ── */
+        .hero {
+            background: var(--ink);
+            color: white;
+            padding: 104px 20px 84px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+            background-size: 52px 52px;
+            pointer-events: none;
+        }
+        .hero-content {
+            max-width: 780px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-photo-container { margin-bottom: 28px; animation: fadeInUp 0.6s ease; }
+        .profile-photo {
+            width: 128px;
+            height: 128px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.18);
+            object-fit: cover;
+            transition: border-color 0.3s;
+        }
+        .profile-photo:hover { border-color: rgba(255,255,255,0.45); }
+
+        .hero h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: clamp(2.4rem, 5vw, 3.8rem);
+            font-weight: 400;
+            letter-spacing: -0.025em;
+            line-height: 1.1;
+            margin-bottom: 10px;
+            animation: fadeInUp 0.6s ease 0.1s backwards;
+        }
+        .credentials {
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: rgba(255,255,255,0.45);
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+            animation: fadeInUp 0.6s ease 0.15s backwards;
+        }
+        .tagline {
+            font-family: 'DM Serif Display', serif;
+            font-style: italic;
+            font-size: clamp(1.1rem, 2.5vw, 1.45rem);
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 40px;
+            line-height: 1.4;
+            animation: fadeInUp 0.6s ease 0.2s backwards;
+        }
+
+        .certs-bar {
+            display: inline-flex;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+            background: rgba(255,255,255,0.055);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 10px 18px;
+            margin-bottom: 20px;
+            animation: fadeInUp 0.6s ease 0.25s backwards;
+        }
+        .cert-item {
+            font-size: 0.78rem;
+            font-weight: 500;
+            color: rgba(255,255,255,0.75);
+            letter-spacing: 0.05em;
+            padding: 3px 11px;
+        }
+        .cert-divider {
+            width: 1px;
+            height: 13px;
+            background: rgba(255,255,255,0.18);
+            flex-shrink: 0;
+        }
+
+        .awards {
+            margin-bottom: 36px;
+            animation: fadeInUp 0.6s ease 0.3s backwards;
+        }
+        .award-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.065);
+            color: rgba(255,255,255,0.72);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin: 3px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.6s ease 0.35s backwards;
+        }
+        .btn {
+            padding: 11px 26px;
+            border-radius: 6px;
+            font-size: 0.92rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s;
+            font-family: 'Figtree', sans-serif;
+            letter-spacing: 0.01em;
+        }
+        .btn-primary { background: white; color: var(--ink); }
+        .btn-primary:hover { background: rgba(255,255,255,0.92); transform: translateY(-1px); }
+        .btn-secondary { background: transparent; color: white; border: 1px solid rgba(255,255,255,0.3); }
+        .btn-secondary:hover { background: rgba(255,255,255,0.07); transform: translateY(-1px); }
+
+        /* ── MANIFESTO BREAK ── */
+        .manifesto-break {
+            background: var(--ink);
+            border-top: 1px solid rgba(255,255,255,0.06);
+            padding: 64px 24px;
+            text-align: center;
+        }
+        .manifesto-break blockquote {
+            font-family: 'DM Serif Display', serif;
+            font-style: italic;
+            font-size: clamp(1.6rem, 3.8vw, 2.8rem);
+            line-height: 1.3;
+            letter-spacing: -0.02em;
+            max-width: 680px;
+            margin: 0 auto;
+        }
+        .manifesto-break blockquote .dim { color: rgba(255,255,255,0.35); }
+        .manifesto-break blockquote .bright { color: rgba(255,255,255,0.88); }
+
+        /* ── STATS ── */
+        .quick-stats {
+            background: var(--surface);
+            padding: 0;
+            border-top: 3px solid var(--blue);
+        }
+        .stats-grid {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            background: var(--border);
+            gap: 1px;
+        }
+        .stat-card {
+            text-align: center;
+            padding: 48px 24px;
+            background: var(--white);
+            transition: background 0.2s;
+        }
+        .stat-card:hover { background: #fafbff; }
+        .stat-number {
+            font-family: 'DM Serif Display', serif;
+            font-size: 3.2rem;
+            font-weight: 400;
+            color: var(--blue);
+            display: block;
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+        .stat-label { font-size: 0.88rem; font-weight: 600; color: var(--text); line-height: 1.3; }
+        .stat-sublabel { font-size: 0.78rem; color: var(--muted); margin-top: 4px; }
+
+        /* ── SECTION COMMON ── */
+        .section-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            font-weight: 400;
+            text-align: center;
+            margin-bottom: 12px;
+            color: var(--text);
+            letter-spacing: -0.02em;
+        }
+        .section-subtitle {
+            text-align: center;
+            font-size: 0.97rem;
+            color: var(--muted);
+            margin-bottom: 52px;
+            max-width: 620px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.75;
+        }
+
+        /* ── EDUCATION ── */
+        .education {
+            max-width: 1100px;
+            margin: 88px auto;
+            padding: 0 24px;
+        }
+        .education-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 16px;
+        }
+        .degree-card {
+            background: var(--white);
+            padding: 32px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--blue);
+            transition: transform 0.25s, box-shadow 0.25s;
+        }
+        .degree-card:nth-child(2) { border-left-color: var(--amber); }
+        .degree-card:nth-child(3) { border-left-color: var(--subtle); }
+        .degree-card:hover { transform: translateY(-4px); box-shadow: 0 10px 28px rgba(0,0,0,0.07); }
+
+        .degree-type {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2.4rem;
+            font-weight: 400;
+            color: var(--blue);
+            line-height: 1;
+            margin-bottom: 12px;
+        }
+        .degree-card:nth-child(2) .degree-type { color: var(--amber); }
+        .degree-card:nth-child(3) .degree-type { color: var(--subtle); }
+
+        .degree-name { font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+        .degree-school { font-size: 0.88rem; color: var(--muted); margin-bottom: 6px; line-height: 1.5; }
+        .degree-year { font-size: 0.82rem; color: var(--subtle); }
+
+        .degree-honors {
+            margin-top: 18px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .honor-badge {
+            background: var(--surface);
+            color: var(--muted);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.76rem;
+            font-weight: 500;
+        }
+        .degree-manifesto {
+            margin-top: 16px;
+            padding: 10px 14px;
+            border-left: 2px solid var(--amber);
+            font-family: 'DM Serif Display', serif;
+            font-style: italic;
+            font-size: 0.93rem;
+            color: var(--amber);
+            line-height: 1.45;
+        }
+
+        /* ── VALUE PROP ── */
+        .value-prop { background: var(--surface); padding: 88px 20px; }
+        .value-content { max-width: 1100px; margin: 0 auto; }
+        .value-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 18px;
+            margin-top: 16px;
+        }
+        .value-card {
+            background: var(--white);
+            padding: 28px 30px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            transition: transform 0.25s, box-shadow 0.25s;
+        }
+        .value-card:hover { transform: translateY(-3px); box-shadow: 0 8px 22px rgba(0,0,0,0.055); }
+        .value-icon { font-size: 1.4rem; margin-bottom: 12px; display: block; }
+        .value-card h3 { font-size: 1rem; margin-bottom: 10px; color: var(--text); font-weight: 600; }
+        .value-card p { color: var(--muted); line-height: 1.78; font-size: 0.91rem; }
+
+        /* ── CLINICAL ── */
+        .clinical { max-width: 1100px; margin: 88px auto; padding: 0 24px; }
+        .clinical-highlights {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 14px;
+            margin-top: 16px;
+        }
+        .clinical-card {
+            background: var(--white);
+            padding: 22px 24px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--blue);
+            transition: transform 0.2s;
+        }
+        .clinical-card:hover { transform: translateX(4px); }
+        .clinical-card h4 { font-size: 0.93rem; margin-bottom: 6px; color: var(--text); font-weight: 600; }
+        .clinical-card .hours {
+            font-size: 0.74rem;
+            color: var(--blue);
+            margin-bottom: 8px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+        .clinical-card p { color: var(--muted); font-size: 0.87rem; line-height: 1.65; }
+
+        /* ── JOURNEY ── */
+        .journey { background: var(--white); padding: 88px 20px; }
+        .timeline { max-width: 720px; margin: 16px auto 0; position: relative; }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 24px; top: 0; bottom: 0;
+            width: 1px;
+            background: var(--border);
+        }
+        .timeline-item { position: relative; padding-left: 68px; margin-bottom: 44px; }
+        .timeline-dot {
+            position: absolute;
+            left: 18px; top: 6px;
+            width: 13px; height: 13px;
+            background: var(--blue);
+            border: 2px solid var(--white);
+            border-radius: 50%;
+            box-shadow: 0 0 0 1px var(--border);
+        }
+        .timeline-year {
+            font-size: 0.74rem;
+            font-weight: 600;
+            color: var(--blue);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+        .timeline-item h3 { font-size: 1.02rem; margin-bottom: 6px; color: var(--text); font-weight: 600; }
+        .timeline-item p { color: var(--muted); line-height: 1.78; font-size: 0.91rem; }
+
+        /* ── TESTIMONIALS ── */
+        .testimonials { background: var(--ink); color: white; padding: 88px 20px; }
+        .testimonials .section-title { color: white; }
+        .testimonials .section-subtitle { color: rgba(255,255,255,0.42); }
+
+        .recommenders-grid {
+            max-width: 1100px;
+            margin: 0 auto 48px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 16px;
+        }
+        .recommender-card {
+            padding: 22px 26px;
+            background: rgba(255,255,255,0.04);
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.07);
+            text-align: center;
+        }
+        .recommender-name { font-size: 0.95rem; font-weight: 600; color: rgba(255,255,255,0.88); margin-bottom: 6px; }
+        .recommender-title { font-size: 0.82rem; color: rgba(255,255,255,0.4); line-height: 1.55; }
+
+        .testimonial-grid {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 16px;
+        }
+        .testimonial-card {
+            background: rgba(255,255,255,0.04);
+            padding: 26px 28px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.07);
+        }
+        .quote-mark {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2.2rem;
+            color: var(--blue);
+            line-height: 1;
+            margin-bottom: 12px;
+            opacity: 0.7;
+        }
+        .quote { font-size: 0.91rem; line-height: 1.82; margin-bottom: 16px; font-style: italic; color: rgba(255,255,255,0.7); }
+        .author { font-weight: 600; font-size: 0.8rem; color: rgba(255,255,255,0.38); letter-spacing: 0.04em; }
+
+        /* ── CONTACT CTA ── */
+        .contact-cta { background: var(--blue); color: white; padding: 88px 20px; text-align: center; }
+        .contact-cta h2 {
+            font-family: 'DM Serif Display', serif;
+            font-size: clamp(2rem, 4.5vw, 3.2rem);
+            font-weight: 400;
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+        .contact-cta p {
+            font-size: 0.97rem;
+            margin-bottom: 36px;
+            opacity: 0.82;
+            max-width: 580px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.75;
+        }
+
+        /* ── ANIMATIONS ── */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(18px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 768px) {
+            .hero { padding: 88px 20px 64px; }
+            .manifesto-break { padding: 48px 20px; }
+            .timeline::before { left: 16px; }
+            .timeline-item { padding-left: 50px; }
+            .timeline-dot { left: 10px; }
+            .certs-bar { padding: 8px 12px; }
+            .cert-item { font-size: 0.74rem; padding: 3px 8px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Floating Navigation -->
+    <nav class="floating-nav" id="floatingNav">
+        <div class="nav-container">
+            <a href="#top" class="nav-brand">Alejandro Gutierrez, MPH, BSN, RN</a>
+            <button class="nav-toggle" id="navToggle">☰</button>
+            <div class="nav-links" id="navLinks">
+                <a href="#education">Education</a>
+                <a href="#value">Why Different</a>
+                <a href="#clinical">Clinical</a>
+                <a href="#journey">Journey</a>
+                <a href="#testimonials">Testimonials</a>
+                <a href="#contact">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero" id="top">
+        <div class="hero-content">
+            <div class="profile-photo-container">
+                <img src="photo.jpg" alt="Alejandro Gutierrez" class="profile-photo"
+                     onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27128%27 height=%27128%27%3E%3Ccircle cx=%2764%27 cy=%2764%27 r=%2762%27 fill=%27rgba(255,255,255,0.08)%27/%3E%3Ctext x=%2764%27 y=%2780%27 font-family=%27serif%27 font-size=%2752%27 text-anchor=%27middle%27 fill=%27rgba(255,255,255,0.7)%27%3EAG%3C/text%3E%3C/svg%3E'">
+            </div>
+
+            <h1>Alejandro Gutierrez</h1>
+            <div class="credentials">MPH &nbsp;·&nbsp; BSN &nbsp;·&nbsp; RN</div>
+
+            <div class="certs-bar">
+                <span class="cert-item">BLS</span>
+                <span class="cert-divider"></span>
+                <span class="cert-item">ACLS</span>
+                <span class="cert-divider"></span>
+                <span class="cert-item">NIHSS</span>
+                <span class="cert-divider"></span>
+                <span class="cert-item">Medical Spanish for Hospital Nurses</span>
+                <span class="cert-divider"></span>
+                <span class="cert-item">Data Analytics (UC Berkeley)</span>
+            </div>
+
+            <div class="awards">
+                <span class="award-badge">🏆 Ruth G. Franc Kindness Award</span>
+                <span class="award-badge">🎓 Cum Laude</span>
+                <span class="award-badge">⭐ Sigma Theta Tau International</span>
+            </div>
+
+            <div class="cta-buttons">
+                <a href="mailto:alej.fx.guti@gmail.com" class="btn btn-primary">Email Me</a>
+                <a href="Alejandro_Gutierrez_Resume.pdf" download="Alejandro_Gutierrez_Resume.pdf" class="btn btn-secondary">Download Resume</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Stats -->
+    <section class="quick-stats">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-number">600+</span>
+                <span class="stat-label">Clinical Hours</span>
+                <span class="stat-sublabel">At Magnet Hospitals</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">192</span>
+                <span class="stat-label">Preceptorship Hours</span>
+                <span class="stat-sublabel">Peds ED + Adult Med-Surg</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">100+</span>
+                <span class="stat-label">Providers Trained</span>
+                <span class="stat-sublabel">SDOH & EHR Implementation</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">3</span>
+                <span class="stat-label">Graduate Degrees</span>
+                <span class="stat-sublabel">BSN · MPH · BS</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education -->
+    <section class="education" id="education">
+        <h2 class="section-title">Academic Foundation</h2>
+        <p class="section-subtitle">Three degrees building comprehensive healthcare expertise: clinical practice, public health systems, and pre-medical sciences</p>
+
+        <div class="education-grid">
+
+            <div class="degree-card">
+                <div class="degree-type">BSN</div>
+                <div class="degree-name">Bachelor of Science in Nursing</div>
+                <div class="degree-school">Goldfarb School of Nursing at Barnes-Jewish College</div>
+                <div class="degree-year">January – December 2025</div>
+                <div class="degree-honors">
+                    <span class="honor-badge">Cum Laude</span>
+                    <span class="honor-badge" title="Selected by faculty for exemplifying compassion and humanistic practice">Ruth G. Franc Kindness Award — Faculty Nominated</span>
+                    <span class="honor-badge">Sigma Theta Tau — Nursing Honor Society</span>
+                </div>
+            </div>
+
+            <div class="degree-card">
+                <div class="degree-type">MPH</div>
+                <div class="degree-name">Master of Public Health</div>
+                <div class="degree-school">Saint Louis University<br>Behavioral Science & Health Equity</div>
+                <div class="degree-year">2016 – 2018</div>
+                <div class="degree-honors">
+                    <span class="honor-badge">Population Health Lens</span>
+                    <span class="honor-badge">SDOH-Informed Practice</span>
+                    <span class="honor-badge">Implementation Science</span>
+                </div>
+            </div>
+
+            <div class="degree-card">
+                <div class="degree-type">BS</div>
+                <div class="degree-name">Bachelor of Science</div>
+                <div class="degree-school">Saint Louis University<br>Public Health, Pre-Medical Track</div>
+                <div class="degree-year">2013 – 2017</div>
+                <div class="degree-honors">
+                    <span class="honor-badge">Pathophysiology Foundation</span>
+                    <span class="honor-badge">Systems-Level Thinking</span>
+                    <span class="honor-badge">Evidence-Based Reasoning</span>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Value Proposition -->
+    <section class="value-prop" id="value">
+        <div class="value-content">
+            <h2 class="section-title">Why I Practice Differently</h2>
+            <p class="section-subtitle">Most nurses bring clinical training. I also bring a decade of asking why the system beyond the hospital walls keeps failing the same patients.</p>
+
+            <div class="value-grid">
+                <div class="value-card">
+                    <span class="value-icon">🎯</span>
+                    <h3>The Whole Picture</h3>
+                    <p>I don't just see individual cases. I see patterns, upstream factors, and system failures. My MPH taught me why disparities exist. My nursing training showed me how to address them at the bedside. Leading SDOH EHR integration at Activate Care, affecting thousands of patients across hundreds of providers, means I arrive already thinking in systems.</p>
+                    <p>Sarah Decker, one of my clinical faculty, wrote that I "naturally connected clinical findings to broader processes — discharge education, patient behavior change, and chronic disease management." She noted that this systems orientation, paired with emerging clinical judgment, allowed me to anticipate needs and contribute meaningfully during huddles, pre-briefs, and debriefs. That is exactly the nurse I am working to become.</p>
+                </div>
+                <div class="value-card">
+                    <span class="value-icon">📊</span>
+                    <h3>Evidence as a Clinical Tool</h3>
+                    <p>Before I looked at a single data point, I read the room. A mother had brought her son in with a sickle cell pain crisis, and within the first interaction I could feel the weight she was carrying: the bracing, the expectation that she would have to fight to be heard, the quiet signal that this had happened before. I asked her to walk me through the last couple of visits. What she told me was not a complaint. It was a pattern.</p>
+                    <p>That pattern sent me to my preceptor. When I did not hear back after thirty minutes on an urgent message, I went to the charge nurse. I brought what I had observed alongside the objective picture: pain scores consistently eight to ten, vitals trending in the wrong direction, and a documented body of evidence showing that Black patients with sickle cell disease face real disparities in pain management. I was not accusing anyone. I was making the case clearly enough that it could not be set aside. The pain was addressed within forty-five minutes.</p>
+                    <p>Evidence is not just for research. It is how you give a family's experience the weight it deserves when the system is slow to respond.</p>
+                </div>
+                <div class="value-card">
+                    <span class="value-icon">🌍</span>
+                    <h3>Built to Bridge</h3>
+                    <p>My parents came to America as college students in the Midwest without citizenship. They happened to be scientists. It still took them twenty years to become citizens. What they showed me growing up was not just the barriers immigrants face in healthcare. It was how many systems a person has to navigate simultaneously: immigration, education, employment, housing, healthcare, each one with its own language, its own gatekeepers, and its own way of making you feel like you do not quite belong. That lived education did not end when they got their citizenship. It became the lens I carry everywhere.</p>
+                    <p>I am a first-generation American with Colombian, Spanish, Indian, and Kenyan roots, bilingual in Spanish, and genuinely fluent in navigating spaces that were not designed with people like my parents in mind. When a patient or family feels unseen in a clinical setting, I recognize it immediately. Not because I studied it. Because I grew up watching it happen to people I love.</p>
+                    <p>During my pediatric ED preceptorship, I cared for a Spanish-speaking family whose child was in acute crisis. As I explained what was happening in their language, I watched the parents' posture shift. Their questions came freely. The fear did not disappear, but the isolation did. Language access is not a courtesy. In a high-acuity setting where clarity is safety, it is a clinical intervention.</p>
+                </div>
+                <div class="value-card">
+                    <span class="value-icon">💡</span>
+                    <h3>From Idea to Impact</h3>
+                    <p>I don't just develop ideas. I build things that get used. My MPH capstone was a school-wide mindfulness curriculum integrated into an elementary school, designed around stakeholder barriers and measured for actual outcomes. After graduation I trained over a hundred clinicians on SDOH-integrated EHR workflows at Activate Care. At Gateway 180 I developed an evidence-based wellness screening tool adopted by shelter leadership to improve health outcomes for families experiencing homelessness. Three different settings, three different populations, same approach: design for the real world or it won't stick.</p>
+                    <p>Dr. Niemeyer wrote that this work demonstrated "an extraordinary level of initiative, creativity, and compassion" and reflected "systems-level thinking rarely seen at the undergraduate level." I also partnered with the shelter's Volunteer Coordinator to design strategies reducing staff burnout, because sustainable care requires caring for the people delivering it too.</p>
+                </div>
+                <div class="value-card">
+                    <span class="value-icon">❤️</span>
+                    <h3>Kindness as Clinical Competence</h3>
+                    <p>It did not start in nursing school. For years before I ever set foot in a hospital as a clinician, I coached underserved youth at Athletic Scholars Academy, integrating health education and wellness into an after-school soccer program. The kids who showed up were not just there for soccer. They needed someone to see them. That taught me something about presence that no clinical course ever could.</p>
+                    <p>Dr. MaryAnn Niemeyer, who nominated me for the Ruth G. Franc Kindness Award, wrote that my contributions were "grounded in kindness, empathy, and respect." A second faculty mentor independently noted "authentic care" and "genuine warmth." Two people, two different settings, the same observation. Kindness is not softness. It is seeing people when systems make them invisible.</p>
+                    <p>It is also how I built enough trust with a chronically ill patient, over three shifts, that he asked for me by name when it was time to place his NG tube.</p>
+                </div>
+                <div class="value-card">
+                    <span class="value-icon">🚀</span>
+                    <h3>Grows Under Pressure</h3>
+                    <p>"Receptive to feedback." "Responds thoughtfully." "Uncommon poise." Clinical Faculty, Goldfarb School of Nursing. I grew from a reserved new student to a confident clinician in twelve months. When my preceptor said move faster, I implemented her strategies the next shift and never looked back. Twenty years of competitive soccer taught me that feedback is not criticism, it is coaching, and that the best teams are built on people who make each other better. Growth is not always comfortable. I lean into it anyway.</p>
+                    <p>What I also learned across those twelve months is that nursing exposes you to dozens of styles, approaches, and clinical philosophies. I precepted one on one with nurses across different units. I borrowed what worked, asked why behind every decision, and sometimes made a deliberate choice that a different approach fit my practice better. That discernment, coachable but not passive, is still developing. But I arrived at it faster by staying genuinely curious.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Clinical Experience -->
+    <section class="clinical" id="clinical">
+        <div class="clinical-inner">
+        <h2 class="section-title">Trained Among the Best</h2>
+        <p class="section-subtitle">Barnes-Jewish Hospital holds top-20 U.S. News rankings in 14 of 16 specialties. St. Louis Children's is nationally ranked in 10 pediatric specialties. 600 clinical hours at Magnet-designated academic medical centers. 204 of them on the same floor, with the same team, building real continuity of care and learning.</p>
+
+        <div class="clinical-highlights">
+            <div class="clinical-card">
+                <h4>🚨 Pediatric Emergency</h4>
+                <div class="hours">96 hours · St. Louis Children's Hospital (Magnet)</div>
+                <p>Sickle cell crises, severe asthma, burns, behavioral health emergencies, and trauma. One of the country's busiest pediatric EDs, where every shift required calm hands and a faster mind.</p>
+            </div>
+            <div class="clinical-card">
+                <h4>🏥 Adult Med-Surg Preceptorship</h4>
+                <div class="hours">96 hours · Barnes-Jewish Hospital (Magnet)</div>
+                <p>Four to six complex patients per shift. Telemetry, post-op recovery, chronic disease, and end-of-life care. The floor that teaches you what you're made of.</p>
+            </div>
+            <div class="clinical-card">
+                <h4>🏥 Adult Med-Surg Rotation</h4>
+                <div class="hours">216 hours · Barnes-Jewish Hospital (Magnet)</div>
+                <p>Across two units, managing patients whose conditions rarely came one at a time. Advanced wound care, medication management across all routes, and discharge planning that started at admission.</p>
+            </div>
+            <div class="clinical-card">
+                <h4>🧠 Psychiatric Nursing</h4>
+                <div class="hours">48 hours · Barnes-Jewish Hospital (Magnet)</div>
+                <p>Patients navigating crisis, stigma, and systems that often failed them before they arrived. Therapeutic communication, de-escalation, and trauma-informed care in an inpatient setting.</p>
+            </div>
+            <div class="clinical-card">
+                <h4>👶 Obstetrics</h4>
+                <div class="hours">48 hours · Barnes-Jewish Hospital (Magnet)</div>
+                <p>Postpartum care, newborn assessment, and family-centered education during some of the most emotionally loaded hours families will ever experience.</p>
+            </div>
+            <div class="clinical-card">
+                <h4>🩺 Pediatric Endocrinology</h4>
+                <div class="hours">48 hours · Barnes-Jewish Hospital (Magnet)</div>
+                <p>Pediatric and adolescent patients managing endocrine conditions, chronic disease, and acute illness that hadn't yet found a name.</p>
+            </div>
+            <div class="clinical-card">
+                <h4>🏠 Public / Community Health</h4>
+                <div class="hours">48 hours · Gateway 180 Emergency Shelter</div>
+                <p>SDOH-focused care for families experiencing homelessness. Developed an evidence-based wellness screening tool adopted by shelter leadership to improve health outcomes and resource allocation.</p>
+            </div>
+            <div class="clinical-card">
+                <h4>👁️ Clinical Shadowing</h4>
+                <div class="hours">Non-curricular · 2025 & 2011–2015</div>
+                <p>Adult ICU, Neuro ICU, PCU, NICU, PICU, and PACU at Barnes-Jewish and St. Louis Children's (2025). Emergency Department and Pediatric Neurology ICU at MetroWest Medical Center and Boston Children's Hospital (2011–2015). The beginning of a question that took fifteen years to answer.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Journey Timeline -->
+    <section class="journey" id="journey">
+        <h2 class="section-title">The Long Way to the Bedside</h2>
+        <p class="section-subtitle">Every stop was intentional. Every stop brought something back.</p>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-year">2011–2015</div>
+                <h3>The Beginning</h3>
+                <p>Shadowed physicians and nurses at Boston Children's Hospital and MetroWest Medical Center through high school and college. An attending told me: understand why people get sick before you learn how to treat them. That question became a career.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-year">2013–2017</div>
+                <h3>BS: Public Health & Pre-Medical Track</h3>
+                <p>Saint Louis University (SLU). Stopped asking clinical questions. Started asking systemic ones.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-year">2016–2018</div>
+                <h3>MPH: Behavioral Science and Health Equity</h3>
+                <p>SLU College for Public Health and Social Justice. Confirmed what the data already showed: the system produces exactly what it was designed to produce. Policy, power, and politics shape who gets sick and who gets care. That is not a theory. It is a diagnosis.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-year">2019–2022</div>
+                <h3>Product Manager: SDOH Implementation</h3>
+                <p>Spent four years at Activate Care building the infrastructure that sits between a care team flagging a social need and something actually happening about it. Closed-loop referral management, SDOH screening workflows, EHR integrations connecting clinicians and community-based organizations across the country. Trained over a hundred nurses, physicians, and community health workers to use tools designed to close gaps that medicine alone never could. Meaningful work. But I was too far from patients and too far from the care teams I respected most.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-year">2022-2024</div>
+                <h3>The Crossroads</h3>
+                <p>Stayed on with Activate Care as a contractor, then took on an early-stage product role with a developer-founder building an algorithm-less social platform. The kind of opportunity most product people would jump at. Genuinely interesting work. Built real skills. Did not fill the cup. While that chapter was playing out I was supporting my wife through pregnancy, learning Python, completing a data analytics and visualization certificate through UC Berkeley Extension. Our daughter was born in fall 2023. I was able to be with her for her entire first year, which turned out to be the most clarifying twelve months of my life. By the time she was walking, I knew exactly where I needed to be.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-year">2024</div>
+                <h3>The Decision</h3>
+                <p>My wife, an ICU nurse since 2018, had been saying it for years: real change happens at the bedside. She was right. With our daughter's first year behind us, I made the leap to St. Louis alone. She stayed in the Bay with our daughter. We had a plan and we committed to it.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-year">2025</div>
+                <h3>BSN, Goldfarb School of Nursing at Barnes-Jewish College</h3>
+                <p>1 year in the BJC and Washington University academic medical system. 600 hours. Cum Laude. Kindness Award. Sigma Theta Tau. Came home.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-year">2026</div>
+                <h3>Ready</h3>
+                <p>Licensed. Certified. Looking for the right team.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials" id="testimonials">
+        <h2 class="section-title">What Clinical Faculty Say</h2>
+        <p class="section-subtitle">Independent validation from two experienced nursing educators</p>
+
+        <div class="recommenders-grid">
+            <div class="recommender-card">
+                <div class="recommender-name">Sarah Decker, APRN, FNP-C, RN, CNEcl</div>
+                <div class="recommender-title">Clinical Faculty, Goldfarb School of Nursing<br>Faculty Chair, Center for Interprofessional Practice and Education at Washington University Medical Campus</div>
+            </div>
+            <div class="recommender-card">
+                <div class="recommender-name">Dr. MaryAnn Niemeyer, PhD, MSN, RN</div>
+                <div class="recommender-title">Assistant Professor of Nursing<br>Goldfarb School of Nursing at Barnes-Jewish College</div>
+            </div>
+        </div>
+
+        <div class="testimonial-grid">
+            <div class="testimonial-card">
+                <div class="quote-mark">"</div>
+                <div class="quote">He has the ability to think in systems while still delivering excellent bedside care. He naturally connected clinical findings to broader processes—discharge education, patient behavior change, and chronic disease management. This systems-orientation, paired with emerging clinical judgment, allowed him to anticipate needs and contribute meaningfully.</div>
+                <div class="author">— Sarah Decker</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="quote-mark">"</div>
+                <div class="quote">Alejandro brings a unique and valuable combination of clinical excellence, public health expertise, leadership, and cultural humility. His systems-level thinking is rarely seen at the undergraduate level. He will be an outstanding new graduate nurse who will positively impact patients, families, and healthcare systems alike.</div>
+                <div class="author">— Dr. MaryAnn Niemeyer</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="quote-mark">"</div>
+                <div class="quote">He distinguished himself as a residency-ready novice nurse with maturity, purpose, and a remarkable capacity to grow. He progressed from a reserved new student to a confident, compassionate clinician who excelled in therapeutic communication.</div>
+                <div class="author">— Sarah Decker</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="quote-mark">"</div>
+                <div class="quote">His ability to integrate evidence-based rationale into hands-on skills while maintaining patient-centered communication set him apart from his peers. He not only excelled individually, but also served as a peer resource, frequently supporting classmates with skill refinement and clinical reasoning, reflecting both leadership and collegiality.</div>
+                <div class="author">— Dr. MaryAnn Niemeyer</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="quote-mark">"</div>
+                <div class="quote">He remained calm under pressure, demonstrating a level of poise uncommon in early clinical learners. His presence communicates authentic care, the kind that our patients deserve and that cannot be taught from textbooks. He embodies the qualities of a nurse who will strengthen teamwork, elevate patient experience, and contribute to organizational goals.</div>
+                <div class="author">— Sarah Decker</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="quote-mark">"</div>
+                <div class="quote">His work at Gateway 180 emergency shelter demonstrated an extraordinary level of initiative, creativity, and compassion. He envisioned and led development of an Evidence-Based Emergency Shelter Resident Wellness Screening tool designed to improve health outcomes for a highly vulnerable population—an impressive demonstration of systems-level thinking rarely seen at the undergraduate level.</div>
+                <div class="author">— Dr. MaryAnn Niemeyer</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="quote-mark">"</div>
+                <div class="quote">His eagerness to learn was evident in the way he consistently volunteered to complete nursing interventions and proactively engaged in interprofessional communication, seeking to understand not just the 'how,' but the 'why' behind each decision. One floor nurse remarked on his reliability, respectful communication, and genuine willingness to collaborate—and said she would be happy to have him as a coworker.</div>
+                <div class="author">— Sarah Decker</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="quote-mark">"</div>
+                <div class="quote">He demonstrated exceptional receptiveness to feedback, thoroughly reviewing comments on clinical write-ups and responding thoughtfully. His willingness to reflect on and apply guidance contributed greatly to his ongoing growth, clinical reasoning, and professional development. This is a clinician who actively seeks to improve.</div>
+                <div class="author">— Sarah Decker</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact CTA -->
+    <section class="contact-cta" id="contact">
+        <h2>Ready to Join Your Team</h2>
+        <p>Seeking a new grad nurse position where I can master bedside excellence while contributing systems-level thinking to quality improvement and health equity initiatives.</p>
+        <div class="cta-buttons">
+            <a href="mailto:alej.fx.guti@gmail.com" class="btn btn-primary">Email Me</a>
+            <a href="Alejandro_Gutierrez_Resume.pdf" download="Alejandro_Gutierrez_Resume.pdf" class="btn btn-secondary">Download Resume</a>
+        </div>
+    </section>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        const floatingNav = document.getElementById('floatingNav');
+        const navToggle   = document.getElementById('navToggle');
+        const navLinks    = document.getElementById('navLinks');
+
+        window.addEventListener('scroll', () => {
+            floatingNav.classList.toggle('visible', window.pageYOffset > 360);
+        });
+
+        navToggle.addEventListener('click', () => navLinks.classList.toggle('active'));
+
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => navLinks.classList.remove('active'));
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const id = this.getAttribute('href');
+                if (id === '#top') { window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
+                const target = document.querySelector(id);
+                if (target) window.scrollTo({ top: target.offsetTop - 72, behavior: 'smooth' });
+            });
+        });
+
+        // Scroll reveal
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.15 });
+
+        document.querySelectorAll('.value-card, .timeline-item, .clinical-card, .stat-card, .degree-card').forEach(el => {
+            el.style.opacity = '0';
+       
