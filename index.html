@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Alejandro Gutierrez, MPH, BSN, RN | Registered Nurse</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&amp;family=Figtree:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<style>
+        :root {
+            --ink:    #0E1621;
+            --blue:   #1460A6;
+            --amber:  #C06830;
+            --text:   #1C202A;
+            --muted:  #5F6878;
+            --subtle: #6B7380;
+            --surface:#F5F4F1;
+            --border: #DFE2E8;
+            --white:  #FFFFFF;
+            --amber-soft: rgba(192,104,48,0.12);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Figtree', -apple-system, sans-serif;
+            font-size: 16px;
+            line-height: 1.7;
+            color: var(--text);
+            background: var(--white);
+            overflow-x: hidden;
+        }
+
+        /* ── NAV ── */
+        .floating-nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            padding: 16px 32px;
+            z-index: 1000;
+            transform: translateY(-100%);
+            transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s;
+            border-bottom: 1px solid transparent;
+            background: transparent;
+        }
+        .floating-nav.visible {
+            transform: translateY(0);
+            background: rgba(14, 22, 33, 0.97);
+            backdrop-filter: blur(12px);
+            border-bottom-color: rgba(255,255,255,0.07);
+        }
+        .nav-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-brand {
+            color: white;
+            font-weight: 500;
+            font-size: 0.92rem;
+            text-decoration: none;
+            letter-spacing: 0.01em;
+        }
+        .nav-links { display: flex; gap: 2px; align-items: center; }
+        .nav-links a {
+            color: rgba(255,255,255,0.65);
+            text-decoration: none;
+            font-weight: 400;
+            font-size: 0.88rem;
+            transition: color 0.2s, background 0.2s;
+            padding: 7px 13px;
+            border-radius: 6px;
+        }
+        .nav-links a:hover { color: white; background: rgba(255,255,255,0.09); }
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.4rem;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        @media (max-width: 768px) {
+            .floating-nav { padding: 14px 20px; }
+            .nav-links {
+                position: fixed;
+                top: 53px; left: 0; right: 0;
+                background: rgba(14,22,33,0.99);
+                flex-direction: column;
+                gap: 0;
+                padding: 16px;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            .nav-links.active { transform: translateX(0); }
+            .nav-links a { width: 100%; text-align: center; padding: 13px; border-radius: 6px; margin-bottom: 2px; }
+            .nav-toggle { display: block; }
+        }
+
+        /* ── HERO ── */
+        .hero {
+            background: var(--ink);
+            color: white;
+            padding: 104px 20px 84px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+            background-size: 52px 52px;
+            pointer-events: none;
+        }
+        .hero-content {
+            max-width: 780px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-photo-container { margin-bottom: 28px; animation: fadeInUp 0.6s ease; }
+        .profile-photo {
+            width: 128px;
+            height: 128px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.18);
+            object-fit: cover;
+            transition: border-color 0.3s;
+        }
+        .profile-photo:hover { border-color: rgba(255,255,255,0.45); }
+
+        .hero h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: clamp(2.4rem, 5vw, 3.8rem);
+            font-weight: 400;
+            letter-spacing: -0.025em;
+            line-height: 1.1;
+            margin-bottom: 10px;
+            animation: fadeInUp 0.6s ease 0.1s backwards;
+        }
+        .credentials {
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: rgba(255,255,255,0.45);
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+            animation: fadeInUp 0.6s ease 0.15s backwards;
+        }
+        .tagline {
+            font-family: 'DM Serif Display', serif;
+            font-style: italic;
+            font-size: clamp(1.1rem, 2.5vw, 1.45rem);
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 40px;
+            line-height: 1.4;
+            animation: fadeInUp 0.6s ease 0.2s backwards;
+        }
+
+        .certs-bar {
+            display: inline-flex;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+            background: rgba(255,255,255,0.055);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 10px 18px;
+            margin-bottom: 20px;
+            animation: fadeInUp 0.6s ease 0.25s backwards;
+            width: min(900px, 113%);
+        }
+        .cert-item {
+            font-size: 0.78rem;
+            font-weight: 500;
+            color: rgba(255,255,255,0.75);
+            letter-spacing: 0.05em;
+            padding: 3px 8px;
+        }
+        .cert-divider {
+            width: 1px;
+            height: 13px;
+            background: rgba(255,255,255,0.18);
+            flex-shrink: 0;
+        }
+
+        .awards {
+            margin-bottom: 36px;
+            animation: fadeInUp 0.6s ease 0.3s backwards;
+        }
+        .award-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.065);
+            color: rgba(255,255,255,0.72);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin: 3px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.6s ease 0.35s backwards;
+        }
+        .btn {
+            padding: 11px 26px;
+            border-radius: 6px;
+            font-size: 0.92rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s;
+            font-family: 'Figtree', sans-serif;
+            letter-spacing: 0.01em;
+        }
+        .btn-primary { background: white; color: var(--ink); }
+        .btn-primary:hover { background: rgba(255,255,255,0.92); transform: translateY(-1px); }
+        .btn-secondary { background: transparent; color: white; border: 1px solid rgba(255,255,255,0.3); }
+        .btn-secondary:hover { background: rgba(255,255,255,0.07); transform: translateY(-1px); }
+
+        /* ── MANIFESTO BREAK ── */
+        .manifesto-break {
+            background: var(--ink);
+            border-top: 1px solid rgba(255,255,255,0.06);
+            padding: 64px 24px;
+            text-align: center;
+        }
+        .manifesto-break blockquote {
+            font-family: 'DM Serif Display', serif;
+            font-style: italic;
+            font-size: clamp(1.6rem, 3.8vw, 2.8rem);
+            line-height: 1.3;
+            letter-spacing: -0.02em;
+            max-width: 680px;
+            margin: 0 auto;
+        }
+        .manifesto-break blockquote .dim { color: rgba(255,255,255,0.35); }
+        .manifesto-break blockquote .bright { color: rgba(255,255,255,0.88); }
+
+        /* ── STATS ── */
+        .quick-stats {
+            background: var(--surface);
+            padding: 0;
+            border-top: 3px solid var(--blue);
+        }
+        .stats-grid {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            background: var(--border);
+            gap: 1px;
+        }
+        .stat-card {
+            text-align: center;
+            padding: 48px 24px;
+            background: var(--white);
+            transition: background 0.2s;
+        }
+        .stat-card:hover { background: #fafbff; }
+        .stat-number {
+            font-family: 'DM Serif Display', serif;
+            font-size: 3.2rem;
+            font-weight: 400;
+            color: var(--blue);
+            display: block;
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+        .stat-label { font-size: 0.88rem; font-weight: 600; color: var(--text); line-height: 1.3; }
+        .stat-sublabel { font-size: 0.78rem; color: var(--muted); margin-top: 4px; }
+
+        /* ── SECTION COMMON ── */
+        .section-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            font-weight: 400;
+            text-align: center;
+            margin-bottom: 12px;
+            color: var(--text);
+            letter-spacing: -0.02em;
+        }
+        .section-subtitle {
+            text-align: center;
+            font-size: 0.97rem;
+            color: var(--muted);
+            margin-bottom: 52px;
+            max-width: 620px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.75;
+        }
+
+        /* ── EDUCATION ── */
+        .education {
+            background: var(--white);
+            padding: 88px 24px;
+            border-top: 3px solid var(--blue);
+        }
+        .education .education-inner { max-width: 1100px; margin: 0 auto; }
+        .education-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 16px;
+        }
+        .degree-card {
+            background: var(--white);
+            padding: 32px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--blue);
+            transition: transform 0.25s, box-shadow 0.25s;
+        }
+        .degree-card:nth-child(2) { border-left-color: var(--amber); }
+        .degree-card:nth-child(3) { border-left-color: var(--subtle); }
+        .degree-card:hover { transform: translateY(-4px); box-shadow: 0 10px 28px rgba(0,0,0,0.07); }
+
+        .degree-type {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2.4rem;
+            font-weight: 400;
+            color: var(--blue);
+            line-height: 1;
+            margin-bottom: 12px;
+        }
+        .degree-card:nth-child(2) .degree-type { color: var(--amber); }
+        .degree-card:nth-child(3) .degree-type { color: var(--subtle); }
+
+        .degree-name { font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+        .degree-school { font-size: 0.88rem; color: var(--muted); margin-bottom: 6px; line-height: 1.5; }
+        .degree-year { font-size: 0.82rem; color: var(--subtle); }
+
+        .degree-honors {
+            margin-top: 18px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .honor-badge {
+            background: var(--surface);
+            color: var(--muted);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.76rem;
+            font-weight: 500;
+        }
+        .degree-manifesto {
+            margin-top: 16px;
+            padding: 10px 14px;
+            border-left: 2px solid var(--amber);
+            font-family: 'DM Serif Display', serif;
+            font-style: italic;
+            font-size: 0.93rem;
+            color: var(--amber);
+            line-height: 1.45;
+        }
+
+        /* ── VALUE PROP ── */
+        .value-prop { background: var(--surface); padding: 88px 20px; border-top: 3px solid var(--amber); }
+        .value-content { max-width: 1100px; margin: 0 auto; }
+        .value-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 18px;
+            margin-top: 16px;
+        }
+        .value-card {
+            background: var(--white);
+            padding: 28px 30px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            transition: transform 0.25s, box-shadow 0.25s;
+        }
+        .value-card:hover { transform: translateY(-3px); box-shadow: 0 8px 22px rgba(0,0,0,0.055); }
+        .value-icon { font-size: 1.4rem; margin-bottom: 12px; display: block; }
+        .value-card h3 { font-size: 1rem; margin-bottom: 10px; color: var(--text); font-weight: 600; }
+        .value-card p { color: var(--muted); line-height: 1.78; font-size: 0.91rem; }
+
+        /* ── CLINICAL ── */
+        .clinical { background: var(--ink); padding: 88px 24px; border-top: 3px solid #5B9BD5; }
+        .clinical .clinical-inner { max-width: 1100px; margin: 0 auto; }
+        .clinical .section-title { color: white; }
+        .clinical .section-subtitle { color: rgba(255,255,255,0.55); }
+        .clinical-highlights {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 14px;
+            margin-top: 16px;
+        }
+        .clinical-card {
+            background: rgba(255,255,255,0.05);
+            padding: 28px 30px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.09);
+            border-left: 3px solid #5B9BD5;
+            transition: transform 0.2s;
+        }
+        .clinical-card:hover { transform: translateX(4px); }
+        .clinical-card h4 { font-size: 0.93rem; margin-bottom: 6px; color: rgba(255,255,255,0.9); font-weight: 600; }
+        .clinical-card .hours {
+            font-size: 0.74rem;
+            color: #5B9BD5;
+            margin-bottom: 8px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+        .clinical-card p { color: rgba(255,255,255,0.55); font-size: 0.87rem; line-height: 1.65; }
+
+        /* ── JOURNEY ── */
+        .journey { background: var(--surface); padding: 88px 20px; border-top: 3px solid var(--amber); }
+        .timeline { max-width: 720px; margin: 16px auto 0; position: relative; }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 24px; top: 0; bottom: 0;
+            width: 1px;
+            background: var(--border);
+        }
+        .timeline-item { position: relative; padding-left: 68px; margin-bottom: 44px; }
+        .timeline-dot {
+            position: absolute;
+            left: 18px; top: 6px;
+            width: 13px; height: 13px;
+            background: var(--amber);
+            border: 2px solid var(--white);
+            border-radius: 50%;
+            box-shadow: 0 0 0 1px var(--border);
+        }
+        .timeline-year {
+            font-size: 0.74rem;
+            font-weight: 600;
+            color: var(--amber);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+        .timeline-item h3 { font-size: 1.02rem; margin-bottom: 6px; color: var(--text); font-weight: 600; }
+        .timeline-item p { color: var(--muted); line-height: 1.78; font-size: 0.91rem; }
+
+        /* ── TESTIMONIALS ── */
+        .testimonials { background: var(--ink); color: white; padding: 88px 20px; border-top: 3px solid var(--blue); }
+        .testimonials .section-title { color: white; }
+        .testimonials .section-subtitle { color: rgba(255,255,255,0.42); }
+
+        .recommenders-grid {
+            max-width: 1100px;
+            margin: 0 auto 48px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 16px;
+        }
+        .recommender-card {
+            padding: 22px 26px;
+            background: rgba(255,255,255,0.04);
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.07);
+            text-align: center;
+        }
+        .recommender-name { font-size: 0.95rem; font-weight: 600; color: rgba(255,255,255,0.88); margin-bottom: 6px; }
+        .recommender-title { font-size: 0.82rem; color: rgba(255,255,255,0.4); line-height: 1.55; }
+
+        .testimonial-grid {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 16px;
+        }
+        .testimonial-card {
+            background: rgba(255,255,255,0.04);
+            padding: 26px 28px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.07);
+        }
+        .quote-mark {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2.2rem;
+            color: var(--blue);
+            line-height: 1;
+            margin-bottom: 12px;
+            opacity: 0.7;
+        }
+        .quote { font-size: 0.91rem; line-height: 1.82; margin-bottom: 16px; font-style: italic; color: rgba(255,255,255,0.7); }
+        .author { font-weight: 600; font-size: 0.8rem; color: rgba(255,255,255,0.38); letter-spacing: 0.04em; }
+
+        /* ── CONTACT CTA ── */
+        .contact-cta { background: var(--blue); color: white; padding: 88px 20px; text-align: center; border-top: 3px solid var(--amber); }
+        .contact-cta h2 {
+            font-family: 'DM Serif Display', serif;
+            font-size: clamp(2rem, 4.5vw, 3.2rem);
+            font-weight: 400;
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+        .contact-cta p {
+            font-size: 0.97rem;
+            margin-bottom: 36px;
+            opacity: 0.82;
+            max-width: 580px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.75;
+        }
+
+        /* ── ANIMATIONS ── */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(18px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 768px) {
+            .hero { padding: 88px 20px 64px; }
+            .manifesto-break { padding: 48px 20px; }
+            .timeline::before { left: 16px; }
+            .timeline-item { padding-left: 50px; }
+            .timeline-dot { left: 10px; }
+            .certs-bar { padding: 8px 12px; }
+            .cert-item { font-size: 0.74rem; padding: 3px 8px; }
+        }
+    
+.experience-card{max-width:900px;margin:28px auto 0}.experience-card h3{font-size:1.15rem;line-height:1.5}.role-meta{color:var(--muted);margin:6px 0 16px}.experience-card ul{padding-left:22px;margin-top:20px}.experience-card li{margin-bottom:12px}.certs-bar{max-width:100%;width:auto;gap:4px 8px}.stat-label,.stat-sublabel{display:block}.stat-number{font-size:clamp(1.9rem,4vw,3.2rem)}.value-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.education-grid,.recommenders-grid,.testimonial-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}.training-panel{margin-top:24px;padding:24px;background:var(--surface);border-radius:12px}.training-panel p{color:var(--muted);margin-top:8px}.clinical-card h3{font-size:1rem;color:white;margin-bottom:8px}.clinical-card p,.clinical .section-subtitle,.recommender-title,.testimonials .section-subtitle,.author{color:rgba(255,255,255,.72)}.credentials{color:rgba(255,255,255,.7)}section[id]{scroll-margin-top:80px}a:focus-visible,button:focus-visible{outline:3px solid var(--amber);outline-offset:5px}@media(max-width:640px){.value-grid{grid-template-columns:1fr}}@media(max-width:768px){.experience-card,.degree-card,.value-card{padding:24px}.nav-links{visibility:hidden}.nav-links.active{visibility:visible}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+
+/* ── AUDIT FIXES (Oct 2026) ── */
+.skip-link{position:absolute;left:12px;top:-60px;z-index:2000;background:#fff;color:var(--ink);padding:10px 16px;border-radius:6px;font-weight:600;text-decoration:none}
+.skip-link:focus{top:12px}
+main:focus{outline:none}
+.floating-nav:focus-within{transform:translateY(0);background:rgba(14,22,33,.97);border-bottom-color:rgba(255,255,255,.07)}
+.nav-brand{padding:10px 0;display:inline-block;line-height:1.2}
+.nav-toggle{min-width:44px;min-height:44px;display:none;align-items:center;justify-content:center;padding:0}
+.section-title,.contact-cta h2{line-height:1.15}
+.timeline-year{color:#9A4F1F;font-size:.8125rem}
+.contact-cta .contact-location{margin-top:24px;margin-bottom:0;font-size:.875rem;opacity:1;color:#D4E3F2}
+.cert-item{font-size:.875rem}
+.clinical-card .hours,.honor-badge,.stat-sublabel,.award-badge{font-size:.8125rem}
+.experience-card{max-width:760px}
+.stats-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+.stat-number{white-space:nowrap;font-size:clamp(1.75rem,3.4vw,2.75rem)}
+.testimonial-card{margin:0;display:flex;flex-direction:column}
+.testimonial-card .quote{margin:0 0 20px;flex:1}
+.recommender{padding-top:16px;border-top:1px solid rgba(255,255,255,.1)}
+.recommender-name{color:rgba(255,255,255,.9)}
+.site-footer{background:var(--ink);color:rgba(255,255,255,.72);text-align:center;padding:24px 20px;font-size:.875rem}
+.site-footer a{color:#fff}
+.contact-cta{padding-bottom:72px}
+@media(max-width:1023px){.stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:768px){
+ .nav-toggle{display:flex}
+ .nav-links{top:73px;background:#0E1621}
+ .stat-card{padding:28px 14px}
+ .stat-sublabel{font-size:.8125rem}
+ .cert-item{font-size:.8125rem}
+}
+.timeline-item p{max-width:62ch}
+@media(max-width:1099px){
+ .floating-nav{padding:14px 20px}
+ .nav-links{position:fixed;top:73px;left:0;right:0;background:#0E1621;flex-direction:column;gap:0;padding:16px;transform:translateX(-100%);transition:transform .3s ease;visibility:hidden}
+ .nav-links.active{transform:translateX(0);visibility:visible}
+ .nav-links a{width:100%;text-align:center;padding:13px;border-radius:6px;margin-bottom:2px}
+ .nav-toggle{display:flex}
+}
+.testimonials .testimonial-grid{grid-template-columns:repeat(2,minmax(0,1fr));max-width:1000px;margin-left:auto;margin-right:auto}
+@media(max-width:768px){.testimonials .testimonial-grid{grid-template-columns:1fr}}
+@media(max-width:480px){.certs-bar{max-width:290px}}
+</style>
+<meta content="Alejandro Gutierrez, MPH, BSN, RN: bilingual (English/Spanish) California registered nurse with acute inpatient experience, Magnet-hospital clinical training, and a background in public health and care coordination. Based in Sunnyvale." name="description"/>
+<link href="favicon.svg" rel="icon" type="image/svg+xml"/>
+<link href="apple-touch-icon.png" rel="apple-touch-icon"/>
+<meta content="Alejandro Gutierrez, MPH, BSN, RN | Registered Nurse" property="og:title"/>
+<meta content="Bilingual California RN with acute inpatient experience, Magnet-hospital clinical training, and a background in public health and care coordination." property="og:description"/>
+<meta content="website" property="og:type"/>
+<meta content="https://alejfxguti.github.io/nurse-portfolio/" property="og:url"/>
+<meta content="https://alejfxguti.github.io/nurse-portfolio/photo.jpg" property="og:image"/>
+<meta content="Alejandro Gutierrez" property="og:image:alt"/>
+<meta content="summary" name="twitter:card"/>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+<!-- Floating Navigation -->
+<nav class="floating-nav" id="floatingNav">
+<div class="nav-container">
+<a class="nav-brand" href="#top">Alejandro Gutierrez, MPH, BSN, RN</a>
+<button aria-controls="navLinks" aria-expanded="false" aria-label="Toggle navigation" class="nav-toggle" id="navToggle">☰</button>
+<div class="nav-links" id="navLinks"><a href="#experience">Nursing Practice</a><a href="#value">What I Bring</a><a href="#clinical">Clinical Training</a><a href="#education">Education</a><a href="#journey">My Path</a><a href="#testimonials">Faculty Feedback</a><a href="#contact">Contact</a></div>
+</div>
+</nav>
+<main id="main" tabindex="-1">
+<!-- Hero -->
+<section class="hero" id="top">
+<div class="hero-content">
+<div class="profile-photo-container">
+<img alt="Alejandro Gutierrez" class="profile-photo" width="128" height="128" decoding="async" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27128%27 height=%27128%27%3E%3Ccircle cx=%2764%27 cy=%2764%27 r=%2762%27 fill=%27rgba(255,255,255,0.08)%27/%3E%3Ctext x=%2764%27 y=%2780%27 font-family=%27serif%27 font-size=%2752%27 text-anchor=%27middle%27 fill=%27rgba(255,255,255,0.7)%27%3EAG%3C/text%3E%3C/svg%3E'" src="photo.jpg"/>
+</div>
+<h1>Alejandro Gutierrez</h1>
+<div class="credentials">MPH  ·  BSN  ·  RN (CA)</div>
+<p class="tagline">Acute inpatient RN. Fluent in Spanish. Systems thinking at the bedside.</p>
+<div class="certs-bar"><span class="cert-item">California RN</span><span class="cert-item">BLS</span><span class="cert-item">ACLS</span><span class="cert-item">NIHSS</span><span class="cert-item">CPI Training</span></div>
+<div class="cta-buttons">
+<a class="btn btn-primary" href="mailto:alej.fx.guti@gmail.com">Email Me</a>
+<a class="btn btn-secondary" download="Alejandro_Gutierrez_Resume.pdf" href="Alejandro_Gutierrez_Resume.pdf">Download Resume</a>
+</div>
+</div>
+</section>
+<!-- Quick Stats -->
+<section class="quick-stats">
+<div class="stats-grid"><div class="stat-card"><span class="stat-number">1:6</span><span class="stat-label">Current Patient Assignment</span><span class="stat-sublabel">Adult acute inpatient care, Fremont Hospital</span></div><div class="stat-card"><span class="stat-number">192</span><span class="stat-label">Preceptorship Hours</span><span class="stat-sublabel">Adult medical-surgical and pediatric emergency, Magnet hospitals</span></div><div class="stat-card"><span class="stat-number">100+</span><span class="stat-label">Clinicians Trained</span><span class="stat-sublabel">Care-coordination tools and EHR workflows</span></div><div class="stat-card"><span class="stat-number">EN · ES</span><span class="stat-label">Bilingual Care</span><span class="stat-sublabel">Patient and family education in English and Spanish</span></div></div>
+</section><section class="education" id="experience"><div class="education-inner"><h2 class="section-title">Current Nursing Practice</h2><article class="degree-card experience-card"><h3>Registered Nurse | Fremont Hospital – Behavioral Health</h3><p class="role-meta">Fremont, CA | July 2026–Present</p><p>Provide acute inpatient care for adults with psychiatric needs, most on involuntary holds for danger to self, danger to others, or grave disability.</p><ul><li>Manage a 1:6 patient assignment, setting priorities and coordinating the plan of care with the interdisciplinary team.</li><li>Obtain and interpret assessment data, including physical and mental status exams and C-SSRS suicide risk screening; escalate changes in condition or safety concerns to providers.</li><li>Administer medications, evaluate therapeutic response, and monitor for adverse responses and side effects; teach patients self-care and precautions.</li><li>Establish therapeutic relationships and apply CPI de-escalation to manage rapidly changing situations and maintain a safe, healing environment.</li><li>Document admissions, discharges, and progress notes accurately; recommend improvements to charting workflows.</li></ul></article></div></section>
+<!-- Education -->
+
+<!-- Value Proposition -->
+<section class="value-prop" id="value">
+<div class="value-content">
+<h2 class="section-title">What I Bring to Patient Care</h2>
+<p class="section-subtitle">Careful assessment, clear communication, and attention to everything that affects a patient’s recovery.</p>
+<div class="value-grid"><article class="value-card"><h3>Safe Handoffs and Discharges</h3><p>My MPH and healthcare technology background shape the questions I ask at every shift: Does the patient understand the plan? What could make discharge or follow-up difficult? What does the next nurse need to know at handoff? At Activate Care, I built care-coordination tools into EHR workflows and trained more than 100 clinicians to use them.</p></article><article class="value-card"><h3>Advocacy Through Escalation</h3><p>During my pediatric emergency preceptorship, a mother told me her son’s sickle cell pain had gone undertreated on earlier visits. His pain scores stayed at 8 to 10 and his vitals were trending the wrong way. When an urgent message to my preceptor went unanswered for 30 minutes, I took my assessment to the charge nurse, and his pain was addressed within 45 minutes. Listening to the family and presenting objective data is how I advocate.</p></article><article class="value-card"><h3>Language Access at the Bedside</h3><p>I am fluent in Spanish, and as the son of immigrants I know how hard it is to navigate care in a system built around someone else’s language. When I explained a child’s care to a Spanish-speaking family in the pediatric emergency department, their questions came freely and their fear eased. In acute care, where clarity is safety, language access is a clinical intervention.</p></article><article class="value-card"><h3>Kindness as Clinical Practice</h3><p>Before nursing, I coached underserved youth through Athletic Scholars Academy, combining soccer with health education. That work taught me patience, consistency, and how to earn trust. Being nominated by faculty for the Ruth G. Franc Kindness Award reinforced my commitment to respectful, patient-centered care on every shift.</p></article></div>
+</div>
+</section>
+<!-- Clinical Experience -->
+<section class="clinical" id="clinical">
+<div class="clinical-inner">
+<h2 class="section-title">Clinical Training Foundation</h2>
+<p class="section-subtitle">192 senior preceptorship hours in adult medical-surgical and pediatric emergency nursing at two Magnet hospitals, plus additional BSN rotations and community health experience.</p>
+<div class="clinical-highlights"><article class="clinical-card"><h3>Adult Medical-Surgical Preceptorship</h3><div class="hours">96 hours · Barnes-Jewish Hospital (Magnet)</div><p>Provided supervised care for 4–6 patients per shift across telemetry, postoperative recovery, and chronic disease management. Performed wound care, PICC care, Foley catheterization, and NG/PEG tube management; taught patients and families self-care skills to prevent complications after discharge.</p></article><article class="clinical-card"><h3>Pediatric Emergency Preceptorship</h3><div class="hours">96 hours · St. Louis Children’s Hospital (Magnet)</div><p>Provided supervised care for acute medical, behavioral health, and trauma presentations, including rapid assessments, IV therapy, phlebotomy, and medication administration; delivered family-centered education in English and Spanish.</p></article><article class="clinical-card"><h3>Additional Clinical Learning</h3><div class="hours">BSN rotations · 2025</div><p>Additional adult medical-surgical rotation, plus psychiatric nursing, obstetrics, pediatric endocrinology, and community health.</p></article><article class="clinical-card"><h3>Community Health</h3><div class="hours">Gateway 180 Emergency Shelter</div><p>Contributed to development of an evidence-based resident wellness screening tool for families experiencing homelessness.</p></article></div>
+</div>
+</section><section class="education" id="education">
+<div class="education-inner">
+<h2 class="section-title">Academic Foundation</h2>
+<p class="section-subtitle">Education spanning nursing practice, public health, and health equity.</p>
+<div class="education-grid">
+<div class="degree-card">
+<div class="degree-type">BSN</div>
+<div class="degree-name">Bachelor of Science in Nursing</div>
+<div class="degree-school">Goldfarb School of Nursing at Barnes-Jewish College</div>
+<div class="degree-year">January – December 2025</div>
+<div class="degree-honors">
+<span class="honor-badge">Cum Laude</span>
+<span class="honor-badge" title="Selected by faculty for exemplifying compassion and humanistic practice">Ruth G. Franc Kindness Award (Faculty Nominated)</span>
+<span class="honor-badge">Sigma Theta Tau International Honor Society</span>
+</div>
+</div>
+<div class="degree-card">
+<div class="degree-type">MPH</div>
+<div class="degree-name">Master of Public Health</div>
+<div class="degree-school">Saint Louis University<br/>Behavioral Science &amp; Health Equity</div>
+<div class="degree-year">2016 – 2018</div>
+<div class="degree-honors">
+<span class="honor-badge">Population Health Lens</span>
+<span class="honor-badge">SDOH-Informed Practice</span>
+<span class="honor-badge">Implementation Science</span>
+</div>
+</div>
+<div class="degree-card">
+<div class="degree-type">BS</div>
+<div class="degree-name">Bachelor of Science</div>
+<div class="degree-school">Saint Louis University<br/>Public Health, Pre-Medical Track</div>
+<div class="degree-year">2013 – 2017</div>
+<div class="degree-honors">
+<span class="honor-badge">Pathophysiology Foundation</span>
+<span class="honor-badge">Systems-Level Thinking</span>
+<span class="honor-badge">Evidence-Based Reasoning</span>
+</div>
+</div>
+</div><div class="training-panel"><h3>Additional Training</h3><p>ECG/EKG Dysrhythmia Interpretation · Medical Spanish for Hospital Nurses · Data Analytics (UC Berkeley, 2023)</p></div>
+</div>
+</section>
+<!-- Journey Timeline -->
+<section class="journey" id="journey">
+<h2 class="section-title">My Path to Nursing</h2>
+<p class="section-subtitle">Public health, healthcare technology, and a deliberate move into direct patient care.</p>
+<div class="timeline"><article class="timeline-item"><div aria-hidden="true" class="timeline-dot"></div><div class="timeline-year">2013–2018</div><h3>Public Health Foundation</h3><p>Completed a BS in Public Health and an MPH in Behavioral Science &amp; Health Equity at Saint Louis University.</p></article><article class="timeline-item"><div aria-hidden="true" class="timeline-dot"></div><div class="timeline-year">2019–2023</div><h3>Healthcare Technology</h3><p>As a product manager at Activate Care, I translated frontline needs into care-coordination tools and EHR workflows, worked between clinical and engineering teams, and trained 100+ clinicians.</p></article><article class="timeline-item"><div aria-hidden="true" class="timeline-dot"></div><div class="timeline-year">2025</div><h3>Nursing Education</h3><p>Completed my BSN at Goldfarb School of Nursing at Barnes-Jewish College. Graduated Cum Laude and received the Ruth G. Franc Kindness Award and Sigma Theta Tau recognition.</p></article><article class="timeline-item"><div aria-hidden="true" class="timeline-dot"></div><div class="timeline-year">July 2026–Present</div><h3>Registered Nurse | Fremont Hospital</h3><p>Providing acute inpatient care for adults, bringing together bedside nursing, a public health perspective, and attention to how care is coordinated.</p></article></div>
+</section>
+<!-- Testimonials -->
+<section class="testimonials" id="testimonials">
+<h2 class="section-title">Faculty Perspectives</h2>
+<p class="section-subtitle">Feedback from clinical faculty at Goldfarb School of Nursing at Barnes-Jewish College.</p>
+<div class="testimonial-grid">
+<figure class="testimonial-card">
+<div aria-hidden="true" class="quote-mark">"</div>
+<blockquote class="quote">He has the ability to think in systems while still delivering excellent bedside care. He naturally connected clinical findings to broader processes—discharge education, patient behavior change, and chronic disease management. This systems-orientation, paired with emerging clinical judgment, allowed him to anticipate needs and contribute meaningfully.</blockquote>
+<figcaption class="recommender">
+<div class="recommender-name">Sarah Decker, APRN, FNP-C, RN, CNEcl</div>
+<div class="recommender-title">Clinical Faculty, Goldfarb School of Nursing<br/>Faculty Chair, Center for Interprofessional Practice and Education at Washington University Medical Campus</div>
+</figcaption>
+</figure>
+<figure class="testimonial-card">
+<div aria-hidden="true" class="quote-mark">"</div>
+<blockquote class="quote">His ability to integrate evidence-based rationale into hands-on skills while maintaining patient-centered communication set him apart from his peers. He not only excelled individually, but also served as a peer resource, frequently supporting classmates with skill refinement and clinical reasoning, reflecting both leadership and collegiality.</blockquote>
+<figcaption class="recommender">
+<div class="recommender-name">Dr. MaryAnn Niemeyer, PhD, MSN, RN</div>
+<div class="recommender-title">Assistant Professor of Nursing<br/>Goldfarb School of Nursing at Barnes-Jewish College</div>
+</figcaption>
+</figure>
+<figure class="testimonial-card">
+<div aria-hidden="true" class="quote-mark">"</div>
+<blockquote class="quote">He remained calm under pressure, demonstrating a level of poise uncommon in early clinical learners. His presence communicates authentic care, the kind that our patients deserve and that cannot be taught from textbooks. He embodies the qualities of a nurse who will strengthen teamwork, elevate patient experience, and contribute to organizational goals.</blockquote>
+<figcaption class="recommender">
+<div class="recommender-name">Sarah Decker, APRN, FNP-C, RN, CNEcl</div>
+<div class="recommender-title">Clinical Faculty, Goldfarb School of Nursing</div>
+</figcaption>
+</figure>
+<figure class="testimonial-card">
+<div aria-hidden="true" class="quote-mark">"</div>
+<blockquote class="quote">His eagerness to learn was evident in the way he consistently volunteered to complete nursing interventions and proactively engaged in interprofessional communication, seeking to understand not just the 'how,' but the 'why' behind each decision. One floor nurse remarked on his reliability, respectful communication, and genuine willingness to collaborate—and said she would be happy to have him as a coworker.</blockquote>
+<figcaption class="recommender">
+<div class="recommender-name">Sarah Decker, APRN, FNP-C, RN, CNEcl</div>
+<div class="recommender-title">Clinical Faculty, Goldfarb School of Nursing</div>
+</figcaption>
+</figure>
+</div>
+</section>
+<!-- Contact CTA -->
+<section class="contact-cta" id="contact">
+<h2>Let’s Work Together</h2>
+<p>I’m seeking RN roles in acute care hospital settings, including medical-surgical, telemetry, progressive care, emergency, critical care, and oncology units, and I welcome roles with structured orientation or specialty-transition support. I bring adult acute inpatient experience, Magnet-hospital medical-surgical and pediatric emergency training, fluent Spanish, and a background in care coordination and healthcare technology.</p>
+<div class="cta-buttons">
+<a class="btn btn-primary" href="mailto:alej.fx.guti@gmail.com">Email Me</a>
+<a class="btn btn-secondary" href="tel:5082378281">508-237-8281</a>
+<a class="btn btn-secondary" download="Alejandro_Gutierrez_Resume.pdf" href="Alejandro_Gutierrez_Resume.pdf">Download Resume</a>
+</div>
+<p class="contact-location">Based in Sunnyvale, California</p>
+</section>
+</main>
+<footer class="site-footer">
+<p>© 2026 Alejandro Gutierrez, MPH, BSN, RN · <a href="mailto:alej.fx.guti@gmail.com">alej.fx.guti@gmail.com</a> · Last updated October 2026</p>
+</footer>
+<script>const n=document.getElementById('floatingNav'),b=document.getElementById('navToggle'),l=document.getElementById('navLinks');function update(){n.classList.toggle('visible',window.scrollY>360)}window.addEventListener('scroll',update,{passive:true});update();function close(){l.classList.remove('active');b.setAttribute('aria-expanded','false')}b.addEventListener('click',()=>{b.setAttribute('aria-expanded',String(l.classList.toggle('active')))});document.querySelectorAll('.nav-links a').forEach(a=>a.addEventListener('click',close));document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});</script></body></html>
